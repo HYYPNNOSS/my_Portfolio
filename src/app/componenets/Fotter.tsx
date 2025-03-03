@@ -1,6 +1,25 @@
-import Image from 'next/image';
+
+import { useState } from 'react';
+import emailjs from '@emailjs/browser';
+
 
 function Footer() {
+  const [email, setEmail] = useState('');
+
+  const handleSubscribe = () => {
+    const templateParams = {
+      subscriber: email,
+    };
+
+    emailjs.send('service_8nhmekc', 'template_2oelk61', templateParams, 'xDm_k7NQ6v3-jqY8Z')
+      .then((response) => {
+        console.log('SUCCESS!', response.status, response.text);
+        setEmail(''); 
+      }, (err) => {
+        console.error('FAILED...', err);
+      });
+  };
+
   return (
     <footer className="bg-black text-white py-8 px-4 md:px-8">
       <div className="max-w-7xl mx-auto">
@@ -13,10 +32,15 @@ function Footer() {
             <div className="flex flex-col md:flex-row gap-4">
               <input 
                 type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 placeholder="Enter your email"
                 className="flex-1 bg-transparent border-2 border-white rounded-lg px-4 py-2 focus:outline-none"
               />
-              <button className="bg-white text-black px-6 py-2 rounded-lg birds hover:bg-gray-200 transition-colors">
+              <button 
+                onClick={handleSubscribe}
+                className="bg-white text-black px-6 py-2 rounded-lg birds hover:bg-gray-200 transition-colors"
+              >
                 Subscribe
               </button>
             </div>
@@ -27,7 +51,7 @@ function Footer() {
             <h3 className="text-xl md:text-2xl font-bold birds">Connect With Me</h3>
             <div className="flex flex-wrap gap-4">
               <a 
-                href="https://linkedin.com" 
+                href="https://www.linkedin.com/in/hachim-dev/" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="bg-white text-black p-4 rounded-full hover:bg-gray-200 transition-colors"
@@ -38,7 +62,7 @@ function Footer() {
               </a>
 
               <a 
-                href="https://www.upwork.com" 
+                href="https://www.upwork.com/freelancers/~010767cdbd18d9d4c8?mp_source=share" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="bg-white text-black p-4 rounded-full hover:bg-gray-200 transition-colors"
@@ -49,7 +73,7 @@ function Footer() {
               </a>
 
               <a 
-                href="https://calendly.com" 
+                href="https://calendly.com/refine-ux/meeting-with-refineux" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="bg-white text-black p-4 rounded-full hover:bg-gray-200 transition-colors"

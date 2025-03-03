@@ -1,18 +1,18 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import localFont from 'next/font/local';
+// import localFont from 'next/font/local';
 
 import "./globals.css";
 
 
 
-const birds = localFont({
-  src: [
-    { path: '../../public/fonts/hero/Birds.ttf', weight: '500', style: 'normal' },
+// const birds = localFont({
+//   src: [
+//     { path: '../../public/fonts/hero/Birds.ttf', weight: '500', style: 'normal' },
 
-  ],
-  variable: '--font-birds',
-});
+//   ],
+//   variable: '--font-birds',
+// });
 
 // const sfProDisplay = localFont({
 //   src: [

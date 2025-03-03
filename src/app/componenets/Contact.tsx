@@ -1,11 +1,18 @@
 'use client';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
+import emailjs from '@emailjs/browser';
 
 function Contact(){
     const sectionRef = useRef(null);
     const contentRef = useRef(null);
+    const [formData, setFormData] = useState({
+        name: '',
+        email: '',
+        message: ''
+    });
+    const [statusMessage, setStatusMessage] = useState('');
 
     useEffect(() => {
         gsap.registerPlugin(ScrollTrigger);
@@ -31,17 +38,43 @@ function Contact(){
 
     }, []);
 
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        const { name, value } = e.target;
+        setFormData({
+            ...formData,
+            [name]: value
+        });
+    };
+
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        const templateParams = {
+            to_name: formData.name,
+            to_email: formData.email,
+            message: `Hello ${formData.name},\n\nEmail: ${formData.email}\n\n${formData.message}\n`
+        };
+        emailjs.send('service_8nhmekc', 'template_smtdl9j', templateParams, 'xDm_k7NQ6v3-jqY8Z')
+            .then((response) => {
+                console.log('SUCCESS!', response.status, response.text);
+                setStatusMessage('Message sent successfully!');
+                setFormData({ name: '', email: '', message: '' });
+            }, (err) => {
+                console.error('FAILED...', err);
+                setStatusMessage('Failed to send message. Please try again.');
+            });
+    };
+
     return(
         <>
-            <section ref={sectionRef} className="min-h-[100vh] bg-[#f6f6f6] w-full p-4 md:p-8 lg:p-16">
+            <section ref={sectionRef} className="min-h-[100vh] flex justify-center items-center bg-[#f6f6f6] w-full p-4 md:p-8 lg:p-16" id="Contact">
                 <div ref={contentRef} className="w-full mx-auto">
-                    <h1 className="text-black text-[24px] sm:text-[32px] md:text-5xl font-bold mb-12 birds text-center">Let's Work Together ✦</h1>
+                    <h1 className="text-black text-[24px] sm:text-[32px] md:text-5xl font-bold mb-12 birds text-center">Let&apos;s Work Together ✦</h1>
                     
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                         <div className="space-y-8">
                             <div>
                                 <h3 className="text-black text-xl md:text-2xl font-bold mb-4 birds">Get in Touch</h3>
-                                <p className="text-gray-700">Have a project in mind? Let's create something amazing together.</p>
+                                <p className="text-gray-700">Have a project in mind? Let&apos;s create something amazing together.</p>
                             </div>
                             
                             <div className="space-y-4">
@@ -65,30 +98,44 @@ function Contact(){
                             </div>
                         </div>
 
-                        <form className="space-y-6">
+                        <form className="space-y-6" onSubmit={handleSubmit}>
                             <div className="space-y-4">
                                 <input 
                                     type="text" 
+                                    name="name"
+                                    value={formData.name}
+                                    onChange={handleChange}
                                     placeholder="Your Name" 
                                     className="w-full text-black p-3 border-2 border-black rounded-lg bg-transparent focus:outline-none"
                                 />
                                 <input 
                                     type="email" 
+                                    name="email"
+                                    value={formData.email}
+                                    onChange={handleChange}
                                     placeholder="Your Email" 
                                     className="w-full text-black p-3 border-2 border-black rounded-lg bg-transparent focus:outline-none"
                                 />
                                 <textarea 
+                                    name="message"
+                                    value={formData.message}
+                                    onChange={handleChange}
                                     placeholder="Your Message" 
                                     rows={6}
                                     className="w-full text-black p-3 border-2 border-black rounded-lg bg-transparent focus:outline-none"
                                 ></textarea>
                             </div>
                             
-                            <button className="w-full md:w-fit h-fit bg-black px-6 py-3 rounded-lg text-white birds hover:bg-gray-900 transition-colors">
+                            <button type="submit" className="w-full md:w-fit h-fit bg-black px-6 py-3 rounded-lg text-white birds hover:bg-gray-900 transition-colors">
                                 Send Message
                             </button>
                         </form>
                     </div>
+                    {statusMessage && (
+                        <div className={`mt-4 text-center ${statusMessage.includes('successfully') ? 'text-green-600' : 'text-red-600'}`}>
+                            {statusMessage}
+                        </div>
+                    )}
                 </div>
             </section>
         </>

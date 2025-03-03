@@ -1,5 +1,5 @@
 'use client';
-import Image from "next/image";
+
 import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
@@ -51,16 +51,14 @@ function AboutUs(){
 
     return(
         <>
-        <section ref={sectionRef} className="min-h-[50vh] flex flex-col justify-center p-4 md:p-8 lg:p-[64px]">
+        <section ref={sectionRef} className="min-h-[50vh] flex flex-col justify-center p-4 md:p-8 lg:p-[64px]" id="About">
             <div className="flex flex-col justify-center items-center h-full">
                 <div ref={titleRef} className="w-full text-[24px] sm:text-[28px] md:text-[32px] lg:text-5xl font-bold mb-4 text-white birds opacity-0 text-center">
                     <h1>About Me ✦</h1>
                 </div>
                 <div className="w-full flex justify-center">
                     <p ref={textRef} className="w-full max-w-[450px] opacity-0 text-center">
-                        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
-                    </p>
-                </div>
+                    <strong>Forget about me</strong>—what matters is your project. In the next section, I&apos;ll walk you through the exact process I use to turn ideas into high-converting, revenue-generating machines.</p>                </div>
             </div>
         </section>
         </>
